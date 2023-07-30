@@ -1,0 +1,13 @@
+@PACKAGE_INIT@
+
+# Optionally, you can set some variables here, such as additional dependencies
+# set(BASE_UTILS_LIBRARIES Base::Utils)
+
+# List of exported targets
+set(BASE_TARGETS Base::Utils)
+
+# Install the export group
+install(EXPORT BaseConfig
+    NAMESPACE Base::
+    DESTINATION cmake
+)
