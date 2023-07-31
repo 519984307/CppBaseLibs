@@ -18,6 +18,9 @@
 #include <QDebug>
 #include <QUrl>
 
+namespace base { namespace utils
+{
+
 DLL_DECL_SPEC QString Utils_Uint8ToHexQStr(uint8_t in);
 DLL_DECL_SPEC QString Utils_Uint8ArrToHexQStr(uint8_t *arr, ssize_t len);
 DLL_DECL_SPEC QString Utils_QByteArrayToHexQStr(const QByteArray& bytes_arr);
@@ -52,4 +55,5 @@ DLL_DECL_SPEC QByteArrayList SplitByteArray(const QByteArray &in, QByteArray del
 
 DLL_DECL_SPEC void SleepMs(quint64 ms);
 
+}} // Namespaces
 #endif // _UTILS_H_

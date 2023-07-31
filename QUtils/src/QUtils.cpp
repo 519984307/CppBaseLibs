@@ -1,4 +1,4 @@
-#include "Utils/Utils.h"
+#include "QUtils/QUtils.h"
 
 #include <utility>
 #include <QObject>
@@ -10,37 +10,39 @@
 #include <QEventLoop>
 #include <QHostAddress>
 
+namespace base { namespace utils {
+
 QString Utils_Uint8ToHexQStr(uint8_t in)
 {
-    return QString("%1").arg(in, 2, 16, QLatin1Char( '0' )).toUpper();
+    return QString("%1").arg(in, 2, 16, QLatin1Char('0')).toUpper();
 }
 
 QString Utils_Uint8ArrToHexQStr(uint8_t *arr, ssize_t len)
 {
     QString result = "";
-    for( int i = 0; i < len; i++ )
+    for(int i = 0; i < len; i++)
     {
         result += Utils_Uint8ToHexQStr(arr[i]);
-        if( i < len - 1 )
+        if(i < len - 1)
             result += " ";
     }
     return result;
 }
 
-QString Utils_QByteArrayToHexQStr(const QByteArray& bytes_arr)
+QString Utils_QByteArrayToHexQStr(const QByteArray &bytes_arr)
 {
     QString result = "";
 
-    if( bytes_arr.isEmpty() )
+    if(bytes_arr.isEmpty())
         return "";
 
-    for( int i = 0; i < bytes_arr.size(); i++ )
+    for(int i = 0; i < bytes_arr.size(); i++)
     {
-        result += Utils_Uint8ToHexQStr((uint8_t)bytes_arr.at(i)) + " ";
+        result += Utils_Uint8ToHexQStr((uint8_t) bytes_arr.at(i)) + " ";
     }
 
     // Remove last space
-    if( !result.isEmpty() )
+    if(!result.isEmpty())
         result.chop(1);
 
     return result;
@@ -49,7 +51,7 @@ QString Utils_QByteArrayToHexQStr(const QByteArray& bytes_arr)
 bool Utils_RawHexStrToArr(QString in_hexstr, uint8_t *out_arr, ssize_t *out_len, ssize_t max_len)
 {
     QByteArray bytes = Utils_RawHexStrToQByteArr(std::move(in_hexstr));
-    *out_len = ( bytes.size() <= max_len ) ? bytes.size() : max_len;
+    *out_len = (bytes.size() <= max_len) ? bytes.size() : max_len;
     memcpy(out_arr, bytes.constData(), *out_len);
     return true;
 }
@@ -64,13 +66,13 @@ QString Utils_BytesToPrintableAsciiString(const QByteArray *in_arr)
 {
     QString result = "";
 
-    if( in_arr->isEmpty() )
+    if(in_arr->isEmpty())
         return "";
 
-    for(char i : *in_arr)
+    for(char i: *in_arr)
     {
         auto c = QChar(i);
-        if( (c.unicode() >= 0x20 && c.unicode() <= 0x7f) || ( c.unicode() == 0x0A ) )
+        if((c.unicode() >= 0x20 && c.unicode() <= 0x7f) || (c.unicode() == 0x0A))
             result += c;
         else
             result += ".";
@@ -82,13 +84,13 @@ QString Utils_BytesToAlphanumericString(const QByteArray *in_arr)
 {
     QString result = "";
 
-    if( in_arr->isEmpty() )
+    if(in_arr->isEmpty())
         return "";
 
-    for(char i : *in_arr)
+    for(char i: *in_arr)
     {
         auto c = QChar(i);
-        if( c.isDigit() || (c.unicode() >= 0x41 && c.unicode() <= 0x5A ) || (c.unicode() >= 0x61 && c.unicode() <= 0x7A ))
+        if(c.isDigit() || (c.unicode() >= 0x41 && c.unicode() <= 0x5A) || (c.unicode() >= 0x61 && c.unicode() <= 0x7A))
             result += c;
         else
             result += ".";
@@ -100,12 +102,12 @@ QString Utils_BytesToBinaryString(const QByteArray *in_arr)
 {
     QString result = "";
 
-    if( in_arr->isEmpty() )
+    if(in_arr->isEmpty())
         return "";
 
-    for(char i : *in_arr)
+    for(char i: *in_arr)
     {
-        result += QString("%1").arg((uint8_t)i, 8, 2, QChar('0')) + " ";
+        result += QString("%1").arg((uint8_t) i, 8, 2, QChar('0')) + " ";
     }
     return result.trimmed();
 }
@@ -114,29 +116,29 @@ QString Utils_BytesToDECString(const QByteArray *in_arr)
 {
     QString result = "";
 
-    if( in_arr->isEmpty() )
+    if(in_arr->isEmpty())
         return "";
 
-    for(char i : *in_arr)
+    for(char i: *in_arr)
     {
-        result += QString::number((uint8_t)i) + " ";
+        result += QString::number((uint8_t) i) + " ";
     }
     return result.trimmed();
 }
 
-QString ParseCertOrCsrFromFileToHexStr(const QString& fileName)
+QString ParseCertOrCsrFromFileToHexStr(const QString &fileName)
 {
     // Open file and create reading stream
     QFile f(fileName);
-    if (!f.open(QFile::ReadOnly))
-            return "";
+    if(!f.open(QFile::ReadOnly))
+        return "";
 
     // Read file bytes
     QByteArray fileContent = f.readAll();
 
-     // Read content into UI
+    // Read content into UI
     QString delimitator = "-----";
-    if( QString(fileContent).contains(delimitator) )
+    if(QString(fileContent).contains(delimitator))
     {
         // Convert certificate from B64 to binary format.
         QString input = QString(fileContent).simplified().replace(",", "").replace(" ", "").replace("\n", "");
@@ -150,8 +152,8 @@ QString ParseCertOrCsrFromFileToHexStr(const QString& fileName)
     }
 }
 
-QStringList Utils_ExtractAllUrls(const QString& inputText)
-{   
+QStringList Utils_ExtractAllUrls(const QString &inputText)
+{
     QStringList output;
 
     // https://www.geeksforgeeks.org/check-if-an-url-is-valid-or-not-using-regular-expression/
@@ -159,27 +161,27 @@ QStringList Utils_ExtractAllUrls(const QString& inputText)
 
     re.setPatternOptions(QRegularExpression::MultilineOption | QRegularExpression::DotMatchesEverythingOption | QRegularExpression::CaseInsensitiveOption);
 
-    if( !re.isValid() )
+    if(!re.isValid())
     {
         qDebug() << "Invalid matching regex for URLs extraction!";
         return output;
     }
 
     auto lines = inputText.split("\n");
-    for( const QString &line: lines )
+    for(const QString &line: lines)
     {
         auto matches = re.globalMatch(line);
-        while (matches.hasNext())
+        while(matches.hasNext())
         {
             QRegularExpressionMatch match = matches.next();
-            if (match.hasMatch())
+            if(match.hasMatch())
             {
                 QString currUrl = match.captured(0);
 
                 // Remove case when domains like 'www.' are valid
                 if(!currUrl.endsWith("www."))
                 {
-                    if( QUrl(currUrl, QUrl::ParsingMode::StrictMode).isValid() )
+                    if(QUrl(currUrl, QUrl::ParsingMode::StrictMode).isValid())
                     {
                         output.append(currUrl);
                     }
@@ -208,7 +210,7 @@ QStringList Utils_ExtractAllHosts(const QString &input)
 bool Utils_IsValidIPv4(const QString &input)
 {
     QHostAddress address(input);
-    if (QAbstractSocket::IPv4Protocol == address.protocol())
+    if(QAbstractSocket::IPv4Protocol == address.protocol())
     {
         return true;
     }
@@ -218,7 +220,7 @@ bool Utils_IsValidIPv4(const QString &input)
 bool Utils_IsValidIPv6(const QString &input)
 {
     QHostAddress address(input);
-    if (QAbstractSocket::IPv6Protocol == address.protocol())
+    if(QAbstractSocket::IPv6Protocol == address.protocol())
     {
         return true;
     }
@@ -228,11 +230,12 @@ bool Utils_IsValidIPv6(const QString &input)
 void Utils_NumericListSort(QStringList *list)
 {
     QMap<int, QString> m;
-    for (const auto& s: *list) m[s.toInt()] = s;
+    for(const auto &s: *list)
+        m[s.toInt()] = s;
     *list = QStringList(m.values());
 }
 
-bool Utils_FileExists(const QString& fileName)
+bool Utils_FileExists(const QString &fileName)
 {
     QFile file(fileName);
     return file.exists();
@@ -240,19 +243,22 @@ bool Utils_FileExists(const QString& fileName)
 
 QStringList Utils_ParseCsvLine(const QString &string)
 {
-    enum State {Normal, Quote} state = Normal;
+    enum State
+    {
+        Normal, Quote
+    } state = Normal;
     QStringList fields;
     QString value = "";
 
-    for (int i = 0; i < string.size(); i++)
+    for(int i = 0; i < string.size(); i++)
     {
         const QChar current = string.at(i);
 
         // Normal state
-        if (state == Normal)
+        if(state == Normal)
         {
             // Comma
-            if (current == ',')
+            if(current == ',')
             {
                 // Save field
                 fields.append(value.trimmed());
@@ -260,7 +266,7 @@ QStringList Utils_ParseCsvLine(const QString &string)
             }
 
                 // Double-quote
-            else if (current == '"')
+            else if(current == '"')
             {
                 state = Quote;
                 value += current;
@@ -272,15 +278,15 @@ QStringList Utils_ParseCsvLine(const QString &string)
         }
 
             // In-quote state
-        else if (state == Quote)
+        else if(state == Quote)
         {
             // Another double-quote
-            if (current == '"')
+            if(current == '"')
             {
-                if (i < string.size())
+                if(i < string.size())
                 {
                     // A double double-quote?
-                    if (i+1 < string.size() && string.at(i+1) == '"')
+                    if(i + 1 < string.size() && string.at(i + 1) == '"')
                     {
                         value += '"';
 
@@ -301,21 +307,21 @@ QStringList Utils_ParseCsvLine(const QString &string)
         }
     }
 
-    if (!value.isEmpty())
+    if(!value.isEmpty())
         fields.append(value.trimmed());
 
     // Quotes are left in until here; so when fields are trimmed, only whitespace outside of
     // quotes is removed.  The outermost quotes are removed here.
-    for (auto & field : fields)
-        if (field.length()>=1 && field.left(1)=='"')
+    for(auto &field: fields)
+        if(field.length() >= 1 && field.left(1) == '"')
         {
-            field=field.mid(1);
-            if (field.length()>=1 && field.right(1)=='"')
-                field=field.left(field.length()-1);
+            field = field.mid(1);
+            if(field.length() >= 1 && field.right(1) == '"')
+                field = field.left(field.length() - 1);
         }
 
     // Treat case when string ends with comma. Just add an additional field
-    if( string.endsWith(',') )
+    if(string.endsWith(','))
         fields.append("");
 
     return fields;
@@ -325,11 +331,11 @@ QString Util_EncodeForCSV(const QString &string)
 {
     QString out = string;
     // Quotes shall be eascaped using double quotes
-    if( out.contains("\"") )
+    if(out.contains("\""))
         out = out.replace("\"", "\"\"");
 
     // If string contain commas, then content will be in double quotes
-    if( out.contains(",") || out.contains("\n") )
+    if(out.contains(",") || out.contains("\n"))
         out = "\"" + out + "\"";
 
     return out;
@@ -337,25 +343,25 @@ QString Util_EncodeForCSV(const QString &string)
 
 QString Utils_FloatWithDigitsPrecision(float number, int precision)
 {
-    return QString::number(number , 'f', precision);
+    return QString::number(number, 'f', precision);
 }
 
 void Utils_PrintNestedQMap(const QVariantMap &map, int level)
 {
     QString tabs = "";
-    for( int i = 0; i < level; i++ )
+    for(int i = 0; i < level; i++)
         tabs += "\t";
 
     QMapIterator<QString, QVariant> it(map);
-    while( it.hasNext() )
+    while(it.hasNext())
     {
         it.next();
 
-        QString output = tabs + (level>0?"-->":"") + it.key();
-        if( !it.value().toMap().isEmpty() )
+        QString output = tabs + (level > 0 ? "-->" : "") + it.key();
+        if(!it.value().toMap().isEmpty())
         {
             qDebug().nospace().noquote() << output;
-            Utils_PrintNestedQMap(QVariantMap(it.value().toMap()), level+1);
+            Utils_PrintNestedQMap(QVariantMap(it.value().toMap()), level + 1);
         }
         else
         {
@@ -367,19 +373,19 @@ void Utils_PrintNestedQMap(const QVariantMap &map, int level)
 void Utils_PrintNestedQMap_AsQStrings(const QVariantMap &map, int level)
 {
     QString tabs = "";
-    for( int i = 0; i < level; i++ )
+    for(int i = 0; i < level; i++)
         tabs += "\t";
 
     QMapIterator<QString, QVariant> it(map);
-    while( it.hasNext() )
+    while(it.hasNext())
     {
         it.next();
 
-        QString output = tabs + (level>0?"-->":"") + it.key();
-        if( !it.value().toMap().isEmpty() )
+        QString output = tabs + (level > 0 ? "-->" : "") + it.key();
+        if(!it.value().toMap().isEmpty())
         {
             qDebug().nospace().noquote() << output;
-            Utils_PrintNestedQMap_AsQStrings(QVariantMap(it.value().toMap()), level+1);
+            Utils_PrintNestedQMap_AsQStrings(QVariantMap(it.value().toMap()), level + 1);
         }
         else
         {
@@ -401,10 +407,12 @@ QByteArrayList SplitByteArray(const QByteArray &in, QByteArray delimiter)
 
 void SleepMs(quint64 ms)
 {
-    QTime dieTime = QTime::currentTime().addMSecs( ms );
-    while( QTime::currentTime() < dieTime )
+    QTime dieTime = QTime::currentTime().addMSecs(ms);
+    while(QTime::currentTime() < dieTime)
     {
-        QCoreApplication::processEvents( QEventLoop::AllEvents, 100 );
-        QObject().thread()->usleep(1000*ms);
+        QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
+        QObject().thread()->usleep(1000 * ms);
     }
 }
+
+}} // Namespaces
