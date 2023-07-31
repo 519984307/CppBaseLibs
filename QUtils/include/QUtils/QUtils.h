@@ -1,5 +1,5 @@
-#ifndef _UTILS_H_
-#define _UTILS_H_
+#ifndef _BASE_QUTILS_H_
+#define _BASE_QUTILS_H_
 
 #include <QtCore/QtGlobal>
 
@@ -56,4 +56,4 @@ DLL_DECL_SPEC QByteArrayList SplitByteArray(const QByteArray &in, QByteArray del
 DLL_DECL_SPEC void SleepMs(quint64 ms);
 
 }} // Namespaces
-#endif // _UTILS_H_
+#endif // _BASE_QUTILS_H_

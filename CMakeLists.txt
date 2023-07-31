@@ -6,7 +6,9 @@ project(Base VERSION 1.0.0 DESCRIPTION "Base repository containing reusable pack
 set(CMAKE_INSTALL_PREFIX ${CMAKE_SOURCE_DIR}/install)
 
 # Include subdirectories for each component
+add_subdirectory(QGlobals)
 add_subdirectory(QUtils)
+add_subdirectory(QCrypto)
 # add_subdirectory(another_component) - Add other components if needed
 
 ####################################################################################

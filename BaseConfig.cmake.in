@@ -1,9 +1,10 @@
 @PACKAGE_INIT@
 
-# Optionally, you can set some variables here, such as additional dependencies
-# set(BASE_UTILS_LIBRARIES Base::QUtils)
-
 # List of exported targets
+set(BASE_TARGETS Base::QGlobals)
 set(BASE_TARGETS Base::QUtils)
+set(BASE_TARGETS Base::QCrypto)
 
+include("${CMAKE_CURRENT_LIST_DIR}/QGlobalsConfig.cmake")
 include("${CMAKE_CURRENT_LIST_DIR}/QUtilsConfig.cmake")
+include("${CMAKE_CURRENT_LIST_DIR}/QCryptoConfig.cmake")
