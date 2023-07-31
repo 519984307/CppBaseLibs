@@ -25,7 +25,8 @@ target_include_directories(QUtils PUBLIC
 install(TARGETS QUtils
         EXPORT QUtilsConfig
         LIBRARY DESTINATION lib
-        ARCHIVE DESTINATION lib)
+        ARCHIVE DESTINATION lib
+        RUNTIME DESTINATION bin)
 
 install(DIRECTORY include/ DESTINATION include)
 
