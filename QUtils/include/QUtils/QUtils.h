@@ -18,7 +18,7 @@
 #include <QDebug>
 #include <QUrl>
 
-namespace base { namespace utils
+namespace base { namespace Utils
 {
 
 DLL_DECL_SPEC QString Utils_Uint8ToHexQStr(uint8_t in);

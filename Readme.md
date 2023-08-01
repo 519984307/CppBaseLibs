@@ -11,10 +11,19 @@ files to be used within find_package()
 4. cmake --build . --target install
 ```
 
-## How to use generated files in CMake projects
+## Option 1 - How to use generated files in CMake projects
 ```cmake
 list(APPEND CMAKE_PREFIX_PATH "${CMAKE_CURRENT_SOURCE_DIR}/libs/base/install")
 find_package(Base COMPONENTS QUtils REQUIRED)
 ...
 target_link_libraries(BaseLibsTest PUBLIC Qt6::Core Base::QUtils)
+```
+
+## Option 2 - Build libs directly with the project
+```cmake
+add_subdirectory(libs/base/QGlobals)
+add_subdirectory(libs/base/QCrypto)
+add_subdirectory(libs/base/QUtils)
+...
+target_link_libraries(BaseLibsTest PUBLIC QUtils)
 ```

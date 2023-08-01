@@ -6,7 +6,7 @@
 #include <QSslCertificate>
 #include <QSslCertificateExtension>
 
-namespace Core { namespace Crypto { namespace x509 {
+namespace base { namespace Crypto { namespace x509 {
     QString GetCertHumanReadableFormat(const QByteArray &certBytes)
     {
         auto GetSubjInfoHumanReadable = [](const QSslCertificate &cert, bool subject) -> QString {

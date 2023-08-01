@@ -10,7 +10,8 @@
 #include <QEventLoop>
 #include <QHostAddress>
 
-namespace base { namespace utils {
+namespace base { namespace Utils
+{
 
 QString Utils_Uint8ToHexQStr(uint8_t in)
 {

@@ -16,12 +16,7 @@
 #endif
 
 
-class DLL_DECL_SPEC X509Certificate
-{
-
-};
-
-namespace Core { namespace Crypto { namespace x509 
+namespace base { namespace Crypto { namespace x509
 {
     DLL_DECL_SPEC QString GetCertHumanReadableFormat(const QByteArray &certBytes);
 
