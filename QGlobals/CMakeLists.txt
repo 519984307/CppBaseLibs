@@ -15,6 +15,7 @@ find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Core REQUIRED)
 
 # Define the library target
 add_library(${PROJECT_NAME} INTERFACE)
+add_library(Base::${PROJECT_NAME} ALIAS ${PROJECT_NAME})
 
 target_link_libraries(${PROJECT_NAME} INTERFACE Qt${QT_VERSION_MAJOR}::Core)
 

@@ -19,6 +19,7 @@ if(NOT DEFINED QBASE_LIB_TYPE)
     set(QBASE_LIB_TYPE SHARED)
 endif()
 add_library(${PROJECT_NAME} ${QBASE_LIB_TYPE} src/QUtils.cpp)
+add_library(Base::${PROJECT_NAME} ALIAS ${PROJECT_NAME})
 
 target_link_libraries(${PROJECT_NAME} PRIVATE Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Network)
 
